@@ -1,0 +1,6 @@
+{
+  "name": "FINORA AI",
+  "description": "An enterprise-grade, AI-powered personal finance dashboard with bank statement parsing, automated expense categorization, savings predictions, investment suggestion engine, and dynamic AI advising.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
