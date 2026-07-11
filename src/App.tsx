@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   PieChart, Activity, Upload, DollarSign, Target, Zap, Bot, Settings, 
-  Menu, X, Sparkles, RefreshCw, Sun, Moon, LogOut, ShieldCheck, HelpCircle 
+  Menu, X, Sparkles, RefreshCw, LogOut, ShieldCheck, HelpCircle 
 } from 'lucide-react';
 
 import DashboardOverview from './components/DashboardOverview';
@@ -36,7 +36,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'upload' | 'budgets' | 'forecast' | 'investments' | 'waste' | 'chat' | 'reports'>('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const theme = 'dark';
   const currencySymbol = '₹';
   const [language, setLanguage] = useState('English');
   const bgStyle = 'cosmic';
@@ -232,6 +232,15 @@ export default function App() {
 
   // Clear Chat History logs
   const handleClearChatHistory = async () => {
+    // Optimistic UI update: instantly reset chat to initial greeting
+    const welcomeMessage = {
+      id: "c-1",
+      sender: "advisor" as const,
+      text: "Welcome to FINORA AI Assistant! I am ready to help you analyze your cash flows, plan budgets, and answer any financial literacy questions (such as SIP vs FD, Mutual Funds, emergency funds, or credit score improvement) right now. Upload your bank statement to unlock personalized insights!",
+      timestamp: new Date().toISOString()
+    };
+    setChatHistory([welcomeMessage]);
+
     try {
       const response = await fetch('/api/advisor/chat/clear', {
         method: 'POST'
@@ -434,19 +443,6 @@ export default function App() {
 
             {/* Right Side Controls */}
             <div className="flex items-center gap-3.5">
-              
-              {/* Dynamic Theme button */}
-              <button 
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className={`p-2 rounded-xl border hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer shadow-sm ${
-                  theme === 'dark'
-                    ? 'bg-[#09090e] border-slate-900 text-slate-400 hover:text-white'
-                    : 'bg-white border-slate-200 text-slate-500 hover:text-slate-900'
-                }`}
-                title="Toggle Theme"
-              >
-                {theme === 'dark' ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-indigo-500" />}
-              </button>
 
               {/* Upload Statement (Action button matching top right of the screenshot) */}
               <button

@@ -24,6 +24,13 @@ export default function AIAdvisorChat({
   const [isVoiceListening, setIsVoiceListening] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+  const handleClear = async () => {
+    setInput('');
+    setSending(false);
+    setIsVoiceListening(false);
+    await onClearHistory();
+  };
+
   // Standard prompt suggestion chips
   const suggestionChips = [
     "How can I cut subscription costs?",
@@ -105,7 +112,7 @@ export default function AIAdvisorChat({
 
             <div className="pt-6 mt-4 border-t border-slate-900/60">
               <button 
-                onClick={onClearHistory}
+                onClick={handleClear}
                 className="w-full py-2 border border-slate-850 hover:border-rose-500/20 bg-slate-950/50 hover:bg-rose-950/10 text-slate-450 hover:text-rose-400 text-xs font-mono font-bold uppercase tracking-widest rounded-xl transition duration-300"
               >
                 Clear History Logs
@@ -131,16 +138,26 @@ export default function AIAdvisorChat({
               </div>
             </div>
             
-            {/* Visual voice assistant equalizer */}
-            {isVoiceListening && (
-              <div className="flex items-center gap-1 px-3 py-1.5 bg-rose-500/10 border border-rose-500/20 rounded-full text-rose-400 text-[10px] font-mono">
-                <span className="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping" />
-                <span className="h-2.5 w-[2px] bg-rose-500 animate-[bounce_0.8s_infinite]" />
-                <span className="h-3 w-[2px] bg-rose-500 animate-[bounce_0.5s_infinite]" style={{ animationDelay: '0.15s' }} />
-                <span className="h-2 w-[2px] bg-rose-500 animate-[bounce_0.6s_infinite]" style={{ animationDelay: '0.3s' }} />
-                LISTENING...
-              </div>
-            )}
+            {/* Visual voice assistant equalizer & controls */}
+            <div className="flex items-center gap-3">
+              {isVoiceListening && (
+                <div className="flex items-center gap-1 px-3 py-1.5 bg-rose-500/10 border border-rose-500/20 rounded-full text-rose-400 text-[10px] font-mono">
+                  <span className="w-1.5 h-1.5 bg-rose-500 rounded-full animate-ping" />
+                  <span className="h-2.5 w-[2px] bg-rose-500 animate-[bounce_0.8s_infinite]" />
+                  <span className="h-3 w-[2px] bg-rose-500 animate-[bounce_0.5s_infinite]" style={{ animationDelay: '0.15s' }} />
+                  <span className="h-2 w-[2px] bg-rose-500 animate-[bounce_0.6s_infinite]" style={{ animationDelay: '0.3s' }} />
+                  LISTENING...
+                </div>
+              )}
+              
+              <button
+                onClick={handleClear}
+                className="p-1.5 text-slate-500 hover:text-slate-300 rounded-lg hover:bg-white/5 transition border border-slate-900/50"
+                title="Reset Chat History"
+              >
+                <RefreshCw className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </div>
 
           {/* Message List */}

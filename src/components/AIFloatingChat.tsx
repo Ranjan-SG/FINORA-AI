@@ -22,6 +22,12 @@ export default function AIFloatingChat({
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const handleClear = async () => {
+    setInputValue('');
+    setIsTyping(false);
+    await onClearHistory();
+  };
+
   const chips = [
     'Analyze spending',
     'Suggest savings',
@@ -90,13 +96,9 @@ export default function AIFloatingChat({
               <div className="flex items-center gap-1">
                 <button
                   id="btn-clear-chat-history"
-                  onClick={() => {
-                    if (confirm("Are you sure you want to clear your conversation logs?")) {
-                      onClearHistory();
-                    }
-                  }}
+                  onClick={handleClear}
                   className="p-1.5 text-slate-500 hover:text-slate-300 rounded-lg hover:bg-white/5 transition"
-                  title="Clear Chat Logs"
+                  title="Reset Chat Logs"
                 >
                   <RefreshCw className="h-3.5 w-3.5" />
                 </button>
